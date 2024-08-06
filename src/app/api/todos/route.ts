@@ -16,7 +16,8 @@ export async function GET(request: Request) {
 
     const todos = await prisma.todo.findMany({
         take,
-        skip
+        skip,
+        orderBy: { createdAt: 'asc' }
     })
 
     return NextResponse.json(todos);
@@ -32,6 +33,21 @@ export async function POST(request: Request) {
         const { description, completed } = await postSchema.validate(await request.json());
         const todo = await prisma.todo.create({ data: { description, completed } })
         return NextResponse.json(todo);
+    } catch (error) {
+        return NextResponse.json(error, { status: 400 })
+    }
+}
+
+export async function DELETE(request: Request) {
+    try {
+
+
+        const todo = await prisma.todo.deleteMany({
+            where: { completed: true }
+        });
+
+
+        return NextResponse.json({ mensaje: `${todo.count ? 'Se quitaron los todos completados' : 'No hay todos completados'}` });
     } catch (error) {
         return NextResponse.json(error, { status: 400 })
     }
