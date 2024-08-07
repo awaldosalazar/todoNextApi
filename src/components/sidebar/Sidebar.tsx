@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { CiLogout } from 'react-icons/ci';
 import { SidebarItem } from './SidebarItem';
 import Link from 'next/link';
-import { IoCalendarOutline, IoCheckboxOutline, IoListOutline } from 'react-icons/io5';
+import { IoCalendarOutline, IoCheckboxOutline, IoCodeWorkingOutline, IoListOutline } from 'react-icons/io5';
 
 const MenusOptions: ISidebarItem[] = [
     {
@@ -20,6 +20,11 @@ const MenusOptions: ISidebarItem[] = [
         title: 'Server Actions',
         icon: <IoListOutline size={30} />,
         href: '/dashboard/server-todos'
+    },
+    {
+        title: 'Cookies',
+        icon: <IoCodeWorkingOutline size={30} />,
+        href: '/dashboard/cookies'
     }
 ]
 
@@ -41,7 +46,7 @@ export const SideBar = () => {
                 </div>
 
                 <div className="mt-8 text-center">
-                    <Image src="https://tailus.io/sources/blocks/stats-cards/preview/images/second_user.webp"
+                    <Image src="https://avatars.githubusercontent.com/u/73403289?s=96&v=4"
                         alt=""
                         className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
                         width={50}
