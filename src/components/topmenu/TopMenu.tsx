@@ -1,6 +1,21 @@
-import { CiBellOn, CiChat1, CiMenuBurger, CiSearch } from "react-icons/ci"
+import { cookies } from "next/headers"
+import Link from "next/link";
+import { CiChat1, CiMenuBurger, CiSearch, CiShoppingBasket, CiShoppingCart } from "react-icons/ci"
+
+const getTotalCount = (cart: { [id: string]: number }): number => {
+    let items = 0;
+    Object.values(cart).forEach(value => {
+        items += value as number;
+    })
+    return items;
+}
+
 
 export const TopMenu = () => {
+
+    const cookieStore = cookies();
+    const cart = JSON.parse(cookieStore.get('cart')?.value ?? '{}');
+    const totalItems = getTotalCount(cart);
     return (
         <div className="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
 
@@ -26,9 +41,24 @@ export const TopMenu = () => {
                     <button className="flex items-center justify-center w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
                         <CiChat1 size={25} />
                     </button>
-                    <button className="flex items-center justify-center w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
-                        <CiBellOn size={25} />
-                    </button>
+                    <Link className="flex items-center justify-center h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200" href={"/dashboard/cart"}>
+                        <div>
+                            {totalItems > 0 && <div className="bg-blue-500 rounded-full relative float-right w-[15px] h-[17px] hover:animate-bounce">
+                                <div className="mt-[-4px] ml-[-2px]">
+                                    <span className="text-[10px] px-1 text-white font-bold text-center">{totalItems}</span>
+                                </div>
+                            </div>}
+                            <CiShoppingBasket size={25} />
+                        </div>
+                    </Link>
+                    <Link className="p-2 flex items-center justify-center h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200" href={"/dashboard/cart"}>
+                        <div>
+                            {totalItems > 0 && <div className="absolute ml-[6px] mt-[6px]">
+                                <span className="text-[15px] px-1 text-balck font-bold text-center">{totalItems}</span>
+                            </div>}
+                            <CiShoppingCart size={35} />
+                        </div>
+                    </Link>
                 </div>
             </div>
         </div>
