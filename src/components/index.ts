@@ -1,5 +1,6 @@
 // SIDEBAR
 export { SideBar } from './sidebar/Sidebar';
+export { LogOutButton } from './sidebar/LogOutButton';
 
 // TOP MENU
 export { TopMenu } from './topmenu/TopMenu';

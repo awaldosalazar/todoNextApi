@@ -3,7 +3,10 @@ import Image from 'next/image';
 import { CiLogout } from 'react-icons/ci';
 import { SidebarItem } from './SidebarItem';
 import Link from 'next/link';
-import { IoBasketOutline, IoCalendarOutline, IoCheckboxOutline, IoCodeWorkingOutline, IoListOutline } from 'react-icons/io5';
+import { IoBasketOutline, IoCalendarOutline, IoCheckboxOutline, IoCodeWorkingOutline, IoListOutline, IoPersonOutline } from 'react-icons/io5';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { LogOutButton } from './LogOutButton';
 
 const MenusOptions: ISidebarItem[] = [
     {
@@ -30,10 +33,21 @@ const MenusOptions: ISidebarItem[] = [
         title: 'Productos',
         icon: <IoBasketOutline size={30} />,
         href: '/dashboard/products'
+    },
+    {
+        title: 'Perfil',
+        icon: <IoPersonOutline size={30} />,
+        href: '/dashboard/profile'
     }
 ]
 
-export const SideBar = () => {
+export const SideBar = async () => {
+    const session = await getServerSession(authOptions);
+
+    const userName = session?.user?.name ?? 'No Name';
+    const userImage = session?.user?.image ?? 'https://avatars.githubusercontent.com/u/73403289?s=96&v=4';
+    //TODO: const userRole = session?.user?.rol ?? 'No role';
+
     return (
         <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
             <div>
@@ -51,14 +65,14 @@ export const SideBar = () => {
                 </div>
 
                 <div className="mt-8 text-center">
-                    <Image src="https://avatars.githubusercontent.com/u/73403289?s=96&v=4"
+                    <Image src={userImage}
                         alt=""
                         className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
                         width={50}
                         height={50}
                         priority
                     />
-                    <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">Alejandro Waldo Salazar</h5>
+                    <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{userName}</h5>
                     <span className="hidden text-gray-400 lg:block">Developer</span>
                 </div>
 
@@ -70,10 +84,7 @@ export const SideBar = () => {
             </div>
 
             <div className="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
-                <button className="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                    <CiLogout />
-                    <span className="group-hover:text-gray-700">Logout</span>
-                </button>
+                <LogOutButton />
             </div>
         </aside>
 
